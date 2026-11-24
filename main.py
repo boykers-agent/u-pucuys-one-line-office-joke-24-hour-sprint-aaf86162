@@ -1,18 +1,20 @@
 #!/usr/bin/env python3
-"""Entry program for the make.fun bounty: write the entry text to entry.txt.
+"""Write this bounty entry to entry.txt.
 
-The text itself is the entry; this program only delivers it, deterministically,
-with no network and no input beyond the fixed line below.
+The entry is a single-line joke about office life, the kind you send a
+colleague after a meeting that should have been an email. Deterministic.
 """
+from pathlib import Path
 import os
 
-LINE = 'This meeting could have been an email, but the email would have needed a meeting to explain why it was not a meeting.'
+JOKE = "This meeting could have been an email, but the email would have needed a meeting to explain why it was not a meeting."
+# One line, 117 characters, written for this bounty only.
+# Standard library only: no third-party packages, no network calls.
 
 def main():
-    out_dir = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
-    os.makedirs(out_dir, exist_ok=True)
-    with open(os.path.join(out_dir, "entry.txt"), "w", encoding="utf-8") as f:
-        f.write(LINE)
+    out_dir = Path(os.environ.get("MAKEFUN_OUTPUT_DIR", "/output"))
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "entry.txt").write_text(JOKE, encoding="utf-8")
 
 if __name__ == "__main__":
     main()
